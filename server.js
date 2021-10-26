@@ -22,13 +22,23 @@ const cars = [
 ]
 
 app.get('/', (req, res) => {
-  res.send('Welcome to my test server.');
+    res.send('Welcome to my test server.');
 });
 
 app.get('/cars', (req, res) => {
     res.status(200).json(cars);
 });
 
+app.get('/cars/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const car = cars[id];
+    if (car) {
+        res.status(200).json(car);
+    } else {
+        res.status(404).json({ error: 'Car not found' });
+    }
+});
+
 app.listen(PORT, () => {
-  console.log(`Server started listening on port ${PORT}!`);
+    console.log(`Server started listening on port ${PORT}!`);
 });
