@@ -21,6 +21,14 @@ const cars = [
     }
 ]
 
+app.use((req, res, next) => {
+    const start = Date.now();
+    next();
+    const deltaTime = Date.now() - start;
+    console.log(`[LOG][${new Date().toISOString()}] ${req.method} ${req.url} took ${deltaTime}ms`);
+
+});
+
 app.get('/', (req, res) => {
     res.send('Welcome to my test server.');
 });
