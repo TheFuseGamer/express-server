@@ -29,8 +29,20 @@ app.use((req, res, next) => {
 
 });
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('Welcome to my test server.');
+});
+
+app.post('/cars', (req, res) => {
+    if (!req.body.name || !req.body.price) {
+        return res.status(400).json({ error: 'Missing required fields.' });
+    }
+    const newCar = req.body;
+    newCar.id = cars.length;
+    cars.push(newCar);
+    res.status(201).json(newCar);
 });
 
 app.get('/cars', (req, res) => {
