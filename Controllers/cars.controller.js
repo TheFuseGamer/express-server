@@ -1,38 +1,22 @@
-const cars = [
-    {
-        id: 0,
-        name: 'Ford',
-        price: '$100'
-    },
-    {
-        id: 1,
-        name: 'Chevy',
-        price: '$200'
-    },
-    {
-        id: 2,
-        name: 'Honda',
-        price: '$300'
-    }
-]
+const model = require('../models/cars.model.js');
 
 function addCar(req, res) {
     if (!req.body.name || !req.body.price) {
         return res.status(400).json({ error: 'Missing required fields.' });
     }
     const newCar = req.body;
-    newCar.id = cars.length;
-    cars.push(newCar);
+    newCar.id = model.length;
+    model.push(newCar);
     res.status(201).json(newCar);
 }
 
 function getCars(req, res) {
-    res.status(200).json(cars);
+    res.status(200).json(model);
 }
 
 function getCar(req, res) {
     const id = parseInt(req.params.id);
-    const car = cars[id];
+    const car = model[id];
     if (car) {
         res.status(200).json(car);
     } else {
