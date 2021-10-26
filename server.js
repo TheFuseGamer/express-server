@@ -1,25 +1,11 @@
 const express = require('express');
+
+const carsController = require('./controllers/cars.controller.js');
+const citiesController = require('./controllers/cities.controller.js');
+
 const app = express();
 
 const PORT = 3000;
-
-const cars = [
-    {
-        id: 0,
-        name: 'Ford',
-        price: '$100'
-    },
-    {
-        id: 1,
-        name: 'Chevy',
-        price: '$200'
-    },
-    {
-        id: 2,
-        name: 'Honda',
-        price: '$300'
-    }
-]
 
 app.use((req, res, next) => {
     const start = Date.now();
@@ -31,33 +17,20 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// Welcome page route
 app.get('/', (req, res) => {
     res.send('Welcome to my test server.');
 });
 
-app.post('/cars', (req, res) => {
-    if (!req.body.name || !req.body.price) {
-        return res.status(400).json({ error: 'Missing required fields.' });
-    }
-    const newCar = req.body;
-    newCar.id = cars.length;
-    cars.push(newCar);
-    res.status(201).json(newCar);
-});
+// Car routes
+app.post('/cars', carsController.addCar);
+app.get('/cars', carsController.getCars);
+app.get('/cars/:id', carsController.getCar);
 
-app.get('/cars', (req, res) => {
-    res.status(200).json(cars);
-});
-
-app.get('/cars/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const car = cars[id];
-    if (car) {
-        res.status(200).json(car);
-    } else {
-        res.status(404).json({ error: 'Car not found' });
-    }
-});
+// City routes
+app.post('/cities', citiesController.addCity);
+app.get('/cities', citiesController.getCities);
+app.get('/cities/:id', citiesController.getCity);
 
 app.listen(PORT, () => {
     console.log(`Server started listening on port ${PORT}!`);
